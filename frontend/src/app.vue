@@ -4,7 +4,10 @@
   nav#navbar 
     #navbar-container
       #navbar-logo 
-        Logo
+        Logo(
+          width=45
+          height=36
+        )
       .navbar-link-container#navbar-middle-link
         .navbar-link-item 
           router-link(to='/products') Products
