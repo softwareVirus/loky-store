@@ -68,7 +68,7 @@ body {
 
 #navbar-middle-link {
   position: relative;
-  left: 59px;
+  left: 551px;
 }
 
 .navbar-link-item > a {
@@ -76,6 +76,11 @@ body {
   font-weight: 500;
   font-size: 24px;
   color: inherit;
+}
+
+#navbar-logo {
+  position: absolute;
+  top: 13px;
 }
 </style>
 
