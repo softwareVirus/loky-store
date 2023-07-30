@@ -2,24 +2,25 @@
 #app
 
   nav#navbar 
-    #navbar-container
-      #navbar-logo 
-        Logo(
-          width=45
-          height=36
-        )
-      .navbar-link-container#navbar-middle-link
-        .navbar-link-item 
-          router-link(to='/products') Products
-        .navbar-link-item 
-          router-link(to='/cargo') Cargo
-        .navbar-link-item 
-          router-link(to='/contact') Contact
-      .navbar-link-container
-        .navbar-link-item 
-          router-link(to='/sign-in') Sign in
-        .navbar-link-item 
-          router-link(to='/cart/:id') Cart(0)
+    #navbar-box
+      #navbar-container
+        #navbar-logo 
+          Logo(
+            width=45
+            height=36
+          )
+        .navbar-link-container#navbar-middle-link
+          .navbar-link-item 
+            router-link(to='/products') Products
+          .navbar-link-item 
+            router-link(to='/cargo') Cargo
+          .navbar-link-item 
+            router-link(to='/contact') Contact
+        .navbar-link-container
+          .navbar-link-item 
+            router-link(to='/sign-in') Sign in
+          .navbar-link-item 
+            router-link(to='/cart/:id') Cart(0)
 
 
   router-view
@@ -30,12 +31,23 @@
 
 body {
   font-family: 'Roboto', sans-serif;
+  color: #FF4D00;
 }
 
 #navbar {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 9;
+  background: white;
+  width: 100%;
+}
+
+#navbar-box {
   max-width: 1440px;
   margin: 0 auto;
-  min-height: 64px;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -59,11 +71,11 @@ body {
   left: 59px;
 }
 
-a {
+.navbar-link-item > a {
   text-decoration: none;
-  color: #FF4D00;
   font-weight: 500;
   font-size: 24px;
+  color: inherit;
 }
 </style>
 
