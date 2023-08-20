@@ -6,10 +6,10 @@ const logger = require('morgan')
 const cors = require('cors')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')
-
+const passport = require('passport')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
-
+const authRouter = require('./routes/auth')
 require('./database-connection')
 
 const app = express()
@@ -39,9 +39,19 @@ app.use(
     saveUninitialized: false,
   })
 )
+app.all('*', (req, res, next) => {
+  req.body = sanitize(req.body)
+  req.headers = sanitize(req.headers)
+  req.params = sanitize(req.params)
 
+  next()
+})
+
+app.use(passport.authenticate('session'));
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/auth', authRouter)
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
