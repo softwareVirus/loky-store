@@ -75,7 +75,7 @@ export default {
             console.log(event,dragWrapper.value.style.marginLeft)
             const scrollAmount = event.deltaY;
             const divWidth = dragWrapperList.value.clientWidth;
-            const MinimapRectangleMinimapX = event.view.innerWidth/100*20;
+            const MinimapRectangleMinimapX = dragWrapper.value.offsetWidth;
             const currentMargin = (parseInt(dragWrapper.value.style.marginLeft === '' ? 0 : dragWrapper.value.style.marginLeft)+scrollAmount/7.5)
             if(currentMargin > 0 && currentMargin < divWidth - MinimapRectangleMinimapX) {
                 dragWrapper.value.style.marginLeft = currentMargin+"px";
