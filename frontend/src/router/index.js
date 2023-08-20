@@ -18,7 +18,33 @@ const routes = [
   {
     path: '/cargo',
     name: 'Cargo',
-    component: () => import('../views/cargo.vue')
+    component: () => import('../views/cargo.vue'),
+  },
+  {
+    path: '/contact',
+    name: 'Contact',
+    component: () => import('../views/contact.vue'),
+    props: true,
+  },
+  {
+    path: '/products',
+    name: 'Products',
+    component: () => import('../views/products.vue'),
+  },
+  {
+    path: '/product/:id',
+    name: 'Product',
+    component: () => import('../views/product.vue'),
+  },
+  {
+    path: '/user-basket',
+    name: 'UserBasket',
+    component: () => import ('../views/user-basket.vue')
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFoundPage',
+    component: () => import('../views/not-found-page.vue'),
   }
 ]
 
