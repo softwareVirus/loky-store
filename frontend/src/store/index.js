@@ -11,8 +11,7 @@ export default createStore({
     },
   },
   mutations: {
-    updateLogoSize(state, newValue) {
-      console.log(newValue)
+    setLogoSize(state, newValue) {
       state.logoSize = newValue
     },
   },
