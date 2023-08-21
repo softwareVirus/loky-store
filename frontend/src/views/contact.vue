@@ -33,7 +33,7 @@ export default {
       const store = useStore();
 
       onUnmounted(() => {
-        store.commit('updateLogoSize', false)
+        store.dispatch('updateLogoSize', false)
       })
     }
 }

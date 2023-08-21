@@ -35,13 +35,9 @@ export default {
     const store = useStore()
     const logoSize = ref(false)
 
-    const updateLogoSize = () => {
-      store.commit('updateLogoSize', true)
-    }
-
     return {
       logoSize,
-      updateLogoSize,
+      updateLogoSize: () => store.dispatch('updateLogoSize', true),
     }
   },
 }
