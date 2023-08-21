@@ -16,6 +16,7 @@ export default createStore({
     },
   },
   actions: {
+    updateLogoSize: ({ commit }, newLogoSize) => commit('updateLogoSize', newLogoSize),
     async fetchUsers() {
       return (await axios.get('/api/users')).data
     },
