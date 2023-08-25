@@ -26,7 +26,6 @@ export default {
 </script>
 <style lang="css">
 .filled-button {
-    width: 122px;
     height: 35px;
     padding: 8px 12px 8px 12px;
     border: none;
@@ -36,5 +35,17 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.1s ease-in;
+    cursor: pointer;
+}
+
+.filled-button:hover {
+    background-color: #B13600;
+    border-color: #B13600;
+}
+
+.filled-button:disabled {
+    opacity: 0.5;
+    user-select: none;
 }
 </style>
