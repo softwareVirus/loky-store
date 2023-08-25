@@ -6,7 +6,7 @@
             template(v-if="isOpen")
                 MinusIcon
             template(v-else)
-                PlusIcon
+                PlusIcon(color="#2D2D2D")
     div.panel(:class="{ 'open': isOpen }", ref="panel")
         p.accordion-content {{content}}
         .button-box(v-if="isButtonDisplay")
