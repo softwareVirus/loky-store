@@ -31,10 +31,8 @@ export default {
     .shopping-cart-footer {
         display: flex;
         justify-content: space-between;
-        position: absolute;
-        bottom: 24px;
         width: calc(100% - 64px);
-        left: 32px;
+        margin: 0 32px 12px;
         align-items: center;
     }
 
