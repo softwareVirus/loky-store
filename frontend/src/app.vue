@@ -12,32 +12,45 @@
           .navbar-link-item 
             router-link(to='/cargo') Cargo
           .navbar-link-item 
-            router-link(to='/contact') 
-              span(@click.navtive="updateLogoSize") Contact
+            router-link(to='/contact') Contact
         .navbar-link-container
           .navbar-link-item 
             router-link(to='/sign-in') Sign in
           .navbar-link-item 
-            router-link(to='/cart/:id') Cart(0)
+            router-link(to='/user-basket') Cart(0)
   router-view
 </template>
 
 <script>
 import Logo from './components/logo.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, watch  } from 'vue'
 import { useStore } from 'vuex'
+import { useRouter} from 'vue-router'
 
 export default {
   components: {
     Logo,
   },
   setup(props) {
+    const router = useRouter()
     const store = useStore()
     const logoSize = ref(false)
-
+    console.log(router.currentRoute.value.fullPath ,router)
+    watch(() => router.currentRoute.value.fullPath, (newRef, oldRef) => {
+      const routeValue = newRef.slice(1,newRef.length).split('/')[0]
+      console.log(routeValue)
+      if(routeValue !== undefined) {
+        if(routeValue == 'contact' || routeValue == 'sign-in' || routeValue == 'sign-up') {
+          store.dispatch('updateLogoSize', true)
+          return;
+        }
+        store.dispatch('updateLogoSize', false)
+        
+      }
+      console.log(newRef,oldRef)
+    })
     return {
       logoSize,
-      updateLogoSize: () => store.dispatch('updateLogoSize', true),
     }
   },
 }
@@ -52,6 +65,7 @@ body {
 }
 
 :root {
+  --bg-color-primary: #ff4d00;
   --bg-textColor-secondary: #2d2d2d;
   --bg-textColor-thirth: #7b7b7b;
 }
@@ -65,6 +79,11 @@ body {
   width: 100%;
 }
 
+#navbar-middle-link {
+  position: absolute;
+  left: calc(50% - 8.75rem);
+}
+
 #navbar-box {
   max-width: 1440px;
   margin: 0 auto;
@@ -75,11 +94,11 @@ body {
 
 #navbar-container {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   max-width: 1376px;
   width: 100%;
-  margin: 0 auto;
+  max-height: 32px;
+  margin: auto auto;
 }
 
 .navbar-link-container {
@@ -87,20 +106,17 @@ body {
   gap: 1rem;
 }
 
-#navbar-middle-link {
-  position: relative;
-  left: 551px;
+a {
+  text-decoration: none;
 }
 
 .navbar-link-item > a {
-  text-decoration: none;
   font-weight: 500;
   font-size: 24px;
   color: inherit;
 }
 
 #navbar-logo {
-  position: absolute;
-  top: 13px;
+  position: relative;
 }
 </style>
