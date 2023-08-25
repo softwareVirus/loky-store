@@ -16,7 +16,7 @@ export default createStore({
   },
   actions: {
     updateLogoSize({ commit }, newLogoSize){
-       commit('updateLogoSize', newLogoSize)
+       commit('setLogoSize', newLogoSize)
     },
     addProductToCart({ commit, state }, product) {
       if(state.cartProducts.map(item => item.id).includes(product.id)) {
