@@ -1,7 +1,7 @@
 <template lang="pug">
 button.quantity-button(@click="handleQuantity")
-    PlusIcon(v-if="isIncrease")
-    MinusIcon(v-else)
+    PlusIcon(v-if="isIncrease" color="#2D2D2D")
+    MinusIcon(v-else color="#2D2D2D")
 </template>
 <script>
 import PlusIcon from './plus-icon.vue'
