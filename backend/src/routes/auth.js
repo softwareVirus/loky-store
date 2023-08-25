@@ -1,13 +1,16 @@
 const express = require('express')
 const passport = require('passport')
-const LocalStrategy = require('passport-local')
+const LocalStrategy = require('passport-local').Strategy
 const crypto = require('crypto')
 const User = require('../models/user')
 const router = express.Router()
 
-passport.use(
-  new LocalStrategy(function verify(email, password, cb) {
-    const user = User.findOne({ email }, '', function (err, user) {
+passport.use('local-sign',
+  new LocalStrategy({
+    usernameField: "email",
+    passwordField: "password"
+  },async (email, password, cb) => {
+    const user = User.findOne({ email }, function (err, user) {
       if (err) return cb(err)
       if (user === null) return cb(null, false, { message: 'Incorrect username or password.' })
       crypto.scrypt(password, user.salt, 32, (err, hashedPassword) => {
@@ -24,6 +27,7 @@ passport.use(
 )
 
 passport.serializeUser((user, cb) => {
+  console.log(user,cb)
   process.nextTick(() => {
     cb(null, user._id)
   })
@@ -38,51 +42,47 @@ passport.deserializeUser(async (userId, cb) => {
 })
 
 router.post(
-  '/login/password',
-  passport.authenticate('local', {
+  '/login',
+  passport.authenticate('local-sign', {
     successRedirect: '/',
-    failureRedirect: '/login',
+    failureRedirect: '/',
   })
-)
+);
 
 router.post('/logout', function (req, res, next) {
   req.logout(function (err) {
     if (err) {
       return next(err)
     }
-    res.redirect('/sign-up')
+    res.redirect('/')
   })
 })
 
-router.post('/signup', function (req, res, next) {
+router.post('/signup', async function (req, res, next) {
   let salt = crypto.randomBytes(16)
-  crypto.scrypt(req.body.password, salt, 310000, 32, 'sha256', function (err, hashedPassword) {
-    if (err) {
-      return next(err)
-    }
-    User.create(
-      {
-        ...req.body,
-        salt,
-        orderItems: []
-      },
-      function (err) {
-        if (err) {
-          return next(err)
-        }
-        let user = {
-          id: this.lastID,
-          username: req.body.username,
-        }
-        req.login(user, function (err) {
-          if (err) {
-            return next(err)
-          }
-          res.redirect('/')
-        })
+  try {
+    const hashedPassword = crypto.scryptSync(req.body.password, salt, 310000)
+console.log(req.body)
+    const user = await User.create({
+      ...req.body,
+      password: hashedPassword,
+      salt,
+      orderItems: [],
+    })
+
+
+    let tmpUser = user._id
+    req.login(tmpUser, function (err) {
+      if (err) {
+        console.log(err)
+        return next(err)
       }
-    )
-  })
+      res.redirect('/')
+    })
+  } catch (e) {
+    console.log(e)
+    next(e)
+  }
 })
 
 module.exports = router
