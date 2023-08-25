@@ -31,9 +31,9 @@ export default {
     const width = ref(45)
     const height = ref(36)
     const store = useStore()
-    console.log(store.getters.logoSize)
+    console.log(store.state.logoSize)
     watch(
-      () => store.getters.logoSize,
+      () => store.state.logoSize,
       (value, s) => {
         console.log(value, s)
         if (!value) {
