@@ -33,11 +33,14 @@
     "mongoose-autopopulate": "^0.12.2",
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "passport-strategy": "1.x.x",
     "pug": "2.0.0-beta11",
     "socket.io": "^4.5.4"
   },
   "devDependencies": {
+    "chai": "1.x.x",
+    "chai-passport-strategy": "0.1.x",
     "eslint": "^7.8.1",
     "eslint-config-airbnb": "^18.2.0",
     "eslint-config-prettier": "^6.11.0",
@@ -47,12 +50,9 @@
     "eslint-plugin-react-hooks": "^4.1.0",
     "jest": "^26.4.2",
     "lint-staged": "^10.3.0",
+    "mocha": "1.x.x",
     "prettier": "^2.1.1",
     "pretty-quick": "^3.0.0",
-    "supertest": "^4.0.2",
-    "mocha": "1.x.x",
-    "chai": "1.x.x",
-    "chai-passport-strategy": "0.1.x"
+    "supertest": "^4.0.2"
   }
-
 }
