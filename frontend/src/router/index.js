@@ -39,7 +39,17 @@ const routes = [
   {
     path: '/user-basket',
     name: 'UserBasket',
-    component: () => import ('../views/user-basket.vue')
+    component: () => import('../views/user-basket.vue')
+  },
+  {
+    path: '/sign-in',
+    name: 'SignIn',
+    component: () => import('../views/sign-in.vue')
+  },
+  {
+    path: '/sign-up',
+    name: 'SignUp',
+    component: () => import('../views/sign-up.vue')
   },
   {
     path: '/:pathMatch(.*)*',
