@@ -1,6 +1,7 @@
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
+require('dotenv').config()
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
@@ -10,8 +11,8 @@ const passport = require('passport')
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
+const { sanitize } = require('express-mongo-sanitize')
 require('./database-connection')
-
 const app = express()
 app.use(
   cors({
@@ -27,6 +28,7 @@ app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+console.log(process.env.MONGODB_CONNECTION_STRING)
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(
   session({
@@ -51,7 +53,7 @@ app.use(passport.authenticate('session'));
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
-
+//app.get('/login', (req,res) => console.log('here'))
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
