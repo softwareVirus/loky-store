@@ -90,10 +90,10 @@ export default {
   flex-direction: column;
   align-items: center;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   z-index: 1;
 }
-::-webkit-scrollbar {
+.cargo-container::-webkit-scrollbar {
   display: none;
 }
 .cargo-title {
