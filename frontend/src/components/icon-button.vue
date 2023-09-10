@@ -1,6 +1,6 @@
 <template lang="pug">
-button(:class="'icon-button ' + (isCloseButton ? 'close-button' : 'favorite-button')" @click.native="buttonClickEvent")
-    PlusIcon(v-if="isCloseButton" className="close-icon" color="white")
+button(:class="'icon-button ' + (isCloseButton ? 'close-button' : 'favorite-button') + (className !== '' ? ' radius-button' : '')" @click.native="buttonClickEvent" @click="handleClose")
+    PlusIcon(v-if="isCloseButton" :className="'close-icon' + (className !== '' ? ' ' + className : '')" :color="className !== '' ? '#ff4d00' : 'white'")
     FavoriteIcon(v-else)
 </template>
 <script>
@@ -20,6 +20,14 @@ export default {
         buttonClickEvent: {
             type: Function,
             required: true,
+            default: () => {}
+        },
+        className: {
+            type: String,
+            default: ""
+        },
+        handleClose: {
+            type: Function,
             default: () => {}
         }
     }
@@ -48,5 +56,23 @@ export default {
 
 .favorite-button:hover {
     background-color: rgb(231 231 231);
+}
+
+.no-bgcolor {
+    background-color: white;
+}
+
+.radius-button {
+    border-radius: 2rem;
+    border: none;
+    background-color: white;
+}
+
+.radius-button:hover {
+    background-color: white;
+}
+.radius-button > svg {
+    width: 2rem;
+    height: 2rem;
 }
 </style>

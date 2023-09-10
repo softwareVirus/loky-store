@@ -1,6 +1,6 @@
 <template lang="pug">
 .textarea-container 
-    textarea.outlined-textarea(:placeholder="placeholder")
+    textarea.outlined-textarea(:placeholder="placeholder" :style="style" :value="value")
     div
 </template>
 <script>
@@ -10,6 +10,14 @@ export default {
         placeholder: {
             type: String,
             required: true
+        },
+        style: {
+            type: String,
+            default: ''
+        },
+        value: {
+            type: String,
+            default: ""
         }
     }
 }

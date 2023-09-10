@@ -1,6 +1,5 @@
-<template lang="html">
+<template lang="htmnl">
   <svg
-    @click.prevent="() => console.log(width, height)"
     :width="width"
     :height="height"
     class="logo"
@@ -23,39 +22,20 @@
   </svg>
 </template>
 <script>
-import { ref, watch, computed } from 'vue'
-import { useStore } from 'vuex'
 export default {
-  name: 'Logo',
-  setup(props) {
-    const width = ref(45)
-    const height = ref(36)
-    const store = useStore()
-    console.log(store.state.logoSize)
-    watch(
-      () => store.state.logoSize,
-      (value, s) => {
-        console.log(value, s)
-        if (!value) {
-          width.value = 45
-          height.value = 36
-        } else {
-          width.value = 483
-          height.value = 386
+    name: 'Logo',
+    props: {
+        width: {
+            type: Number,
+            default: 135
+        },
+        height: {
+            type: Number,
+            default: 108
         }
-        console.log(width.value, height.value)
-      }
-    )
-    return {
-      myvalue: computed(() => store.getters.logoSize),
-      width,
-      height,
     }
-  },
 }
 </script>
-<style lang="css">
-.logo {
-  transition: all 0.3s ease-in;
-}
+<style lang="">
+    
 </style>

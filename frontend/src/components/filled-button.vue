@@ -1,5 +1,5 @@
 <template lang="pug">
-button.filled-button(:style="style") {{ content }} #[RightArrow(v-if="isRightArrow")] 
+button.filled-button(:style="style" @click="handleOpen" :type="type") {{ content }} #[RightArrow(v-if="isRightArrow")] 
 </template>
 <script>
 import RightArrow from './right-arrow.vue';
@@ -20,6 +20,14 @@ export default {
         content: {
             type: String,
             required: true
+        },
+        handleOpen: {
+            type: Function,
+            default: () => {}
+        },
+        type: {
+            type: String,
+            default: ""
         }
     }
 }
