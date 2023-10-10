@@ -1,11 +1,12 @@
 <template lang="pug">
 #app
 
-  nav#navbar 
+  nav#navbar(v-if="!isAdminRouter")
     #navbar-box
       #navbar-container
-        #navbar-logo 
-          Logo(:logoSize="logoSize")
+        router-link(to='/products')
+          #navbar-logo  
+            NavbarLogo(:logoSize="logoSize")
         .navbar-link-container#navbar-middle-link
           .navbar-link-item 
             router-link(to='/products') Products
@@ -14,43 +15,65 @@
           .navbar-link-item 
             router-link(to='/contact') Contact
         .navbar-link-container
-          .navbar-link-item 
+          .navbar-link-item(v-if="user === null")
             router-link(to='/sign-in') Sign in
-          .navbar-link-item 
-            router-link(to='/user-basket') Cart(0)
-  router-view
+          .navbar-link-item(v-else) {{ user.firstName + " " + user.lastName}}
+          .navbar-link-item(v-if="user !== null")
+            router-link(to='/user-basket') Cart({{ numberOfCart }})
+          .navbar-link-item(v-if="user !== null")
+            a(@click.prevent="handleLogout") Logout
+  Suspense
+    router-view
+    template(#fallback)
+      .loading-container
+        .loading-box
+          Loading
+          p Loading
+ErrorMessage
 </template>
 
 <script>
-import Logo from './components/logo.vue'
-import { ref, computed, watch  } from 'vue'
+import ErrorMessage from './components/error-message.vue'
+import NavbarLogo from './components/navbar-logo.vue'
+import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter} from 'vue-router'
-
+import { useRouter } from 'vue-router'
+import Loading from './components/loading.vue'
 export default {
   components: {
-    Logo,
+    NavbarLogo,
+    Loading,
+    ErrorMessage
   },
   setup(props) {
     const router = useRouter()
     const store = useStore()
+    const isAdminRouter = ref(false)
     const logoSize = ref(false)
-    console.log(router.currentRoute.value.fullPath ,router)
+    const user = computed(() => store.state.user)
+    const numberOfCart = computed(() => store.state.numberOfCart)
     watch(() => router.currentRoute.value.fullPath, (newRef, oldRef) => {
-      const routeValue = newRef.slice(1,newRef.length).split('/')[0]
-      console.log(routeValue)
-      if(routeValue !== undefined) {
-        if(routeValue == 'contact' || routeValue == 'sign-in' || routeValue == 'sign-up') {
+      const routeValue = newRef.slice(1, newRef.length).split('/')[0]
+      isAdminRouter.value = newRef.slice(1, newRef.length).split('/')[0] === 'admin'
+      if (routeValue !== undefined) {
+        if (routeValue == 'contact' || routeValue == 'sign-in' || routeValue == 'sign-up') {
           store.dispatch('updateLogoSize', true)
           return;
         }
         store.dispatch('updateLogoSize', false)
-        
+
       }
-      console.log(newRef,oldRef)
+      console.log(newRef, oldRef)
     })
+    const handleLogout = () => {
+      store.dispatch('logout')
+    }
     return {
       logoSize,
+      user,
+      isAdminRouter,
+      handleLogout,
+      numberOfCart
     }
   },
 }
@@ -66,9 +89,12 @@ body {
 
 :root {
   --bg-color-primary: #ff4d00;
+  --bg-color-secondary: #FF4D0080;
+  --bg-color-table-transparent: #CCCCCCAA;
   --bg-textColor-secondary: #2d2d2d;
   --bg-textColor-thirth: #7b7b7b;
 }
+
 #navbar {
   min-height: 64px;
   display: flex;
@@ -106,17 +132,59 @@ body {
   gap: 1rem;
 }
 
+::-webkit-scrollbar {
+  height: 0.4rem;
+  width: 0.6rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #FF4D0080;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-color-primary);
+}
+
 a {
   text-decoration: none;
 }
 
-.navbar-link-item > a {
+.navbar-link-item {
   font-weight: 500;
   font-size: 24px;
   color: inherit;
 }
 
+.navbar-link-item>a {
+  font-weight: 500;
+  font-size: 24px;
+  color: inherit;
+  cursor: pointer;
+}
+
 #navbar-logo {
   position: relative;
+}
+
+.loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.loading-container {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

@@ -1,10 +1,11 @@
 <template lang="pug">
-#product-quarter-container
+#product-quarter-container(:class="products.map(item => item.inStock ? '' : 'x').join('').length === products.length ? 'disabled-gray' : ''")
     div#product-quarter-title
-        p#product-year 2023 | #[span#product-quarter Q4]
+        p#product-year {{ products[0].releaseYear }} |&nbsp; 
+        span#product-quarter {{ products[0].releaseMonth }}
     div#product-info-container
-        ProductCard(productTitle="Pure Loky Tee" productCost="45 USD")
-        ProductCard(productTitle="Pure Loky Tee" productCost="45 USD")
+      template(v-for="product in products")
+        ProductCard(:product="product")
 </template>
 <script>
 import ProductCard from './product-card.vue'
@@ -13,6 +14,15 @@ export default {
   components: {
     ProductCard,
   },
+  props: {
+    products: {
+      type: Object,
+      required: true
+    }
+  },
+  setup(props) {
+    console.log(props.products, 'here')
+  }
 }
 </script>
 <style lang="css">
@@ -25,6 +35,10 @@ export default {
 
 .minimap #product-quarter-title {
   margin-bottom: 3px !important;
+}
+
+.disabled-gray {
+  filter: grayscale(1);
 }
 
 #product-year,

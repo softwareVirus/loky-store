@@ -1,6 +1,6 @@
 <template lang="pug">
 #product-map-container 
-    ProductList(:getRef="getRef" )
+    ProductList(:getRef="getRef" :products="products")
     .minimap 
         ProductListMinimap(
             :getRef="getRef" 
@@ -9,28 +9,37 @@
             :handleDrag="handleDrag" 
             :endDrag="endDrag" 
             :clickMinimap="clickMinimap"
+            :products="products"
         )
 </template>
 <script>
 import ProductList from '../components/product-list.vue';
 import ProductListMinimap from '../components/product-list-minimap.vue'
-import { ref, reactive } from 'vue'
+import { ref, computed } from 'vue'
+import { useStore } from 'vuex';
+import { groupByDate } from '@/utils/utils'
+
 export default {
     name: "Products",
     components: {
         ProductList,
         ProductListMinimap
     },
-    setup() {
+    async setup() {
+        
         const dragWrapper = ref(null);
         const dragWrapperList = ref(null);
         const dragWrapperCarousel = ref(null);
-        const items = reactive([
-            { id: 1, text: 'Item 1' },
-            { id: 2, text: 'Item 2' },
-            { id: 3, text: 'Item 3' },
-            // Add more items as needed
-        ]);
+        const store = useStore()
+        await store.dispatch('fetchProducts')
+        let months = ["January", "February", "March", "April", "May", "June",
+  	        "July", "August", "September", "October", "November", "December"];
+        const products = computed(() => groupByDate(store.state.products.sort((a,b) => {
+            if(a.releaseYear - b.releaseYear !== 0)
+                return Number(b.releaseYear) - Number(a.releaseYear)
+            return months.indexOf(a.releaseMonth) - months.indexOf(b.releaseMonth)
+        })))
+
         const getRef = (ref1,ref2) => {
             if(ref2 !== undefined) {
                 dragWrapper.value = ref1
@@ -90,7 +99,6 @@ export default {
           
         }
         return {
-            items,
             startDrag,
             handleDrag,
             endDrag,
@@ -99,7 +107,8 @@ export default {
             dragWrapperList,
             clickMinimap,
             getRef,
-            handleWheel
+            handleWheel,
+            products
         };
     },
     

@@ -1,17 +1,30 @@
 <template lang="pug">
 #product-pictures-background
-    img.product-bg-image(src="@/assets/Untitled.png")
-    img.product-bg-image(src="@/assets/Back.png")
-    img.product-bg-image(src="@/assets/Untitled.png")
-OrderCard 
+    img.product-bg-image(:src="data.imageSrc[0].image")
+    img.product-bg-image(:src="data.imageSrc[1].image")
+    img.product-bg-image(:src="data.imageSrc[0].image")
+OrderCard(:product="data")
 </template>
 <script>
+import { useStore } from 'vuex';
 import OrderCard from '../components/order-card/order-card.vue'
+import { useRoute } from 'vue-router';
+import { ref } from 'vue';
 export default {
   name: 'Product',
   components: {
     OrderCard,
   },
+  async setup(props) {
+    const route = useRoute();
+    const store = useStore();
+
+    const data = ref(await store.dispatch('fetchProduct', route.params.id))
+    console.log(data.value)
+    return {
+      data
+    }
+  }
 }
 </script>
 <style lang="css">

@@ -4,20 +4,21 @@
         h2#form-title Sign up to order :)
         form
             .form-inputs
-                OutlinedInput(placeholder="FIRST NAME(required)" type="text")
-                OutlinedInput(placeholder="LAST NAME(required)" type="text")
-                OutlinedInput(placeholder="EMAIL(required)" type="text")
-                OutlinedInput(placeholder="PASSWORD(required)" type="password")
+                OutlinedInput(placeholder="FIRST NAME(required)" type="text" :modelValue="firstName" @update:modelValue="newValue => firstName = newValue")
+                OutlinedInput(placeholder="LAST NAME(required)" type="text" :modelValue="lastName" @update:modelValue="newValue => lastName = newValue")
+                OutlinedInput(placeholder="EMAIL(required)" type="text" :modelValue="email" @update:modelValue="newValue => email = newValue")
+                OutlinedInput(placeholder="PASSWORD(required)" type="password" :modelValue="password" @update:modelValue="newValue => password = newValue")
                 .sign-in-buttons 
-                    FilledButton(content="Sign up ") 
+                    FilledButton(content="Sign up " :handleOpen="handleCreateUser") 
 </template>
 <script>
-import { ref,onUnmounted } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import OutlinedButton from '../components/outlined-button.vue';
 import OutlinedInput from '../components/outlined-input.vue';
 import OutlinedTextarea from '../components/outlined-textarea.vue';
 import FilledButton from '../components/filled-button.vue';
+import { useRouter } from 'vue-router';
 export default {
     name: "SignUp",
     props: {
@@ -33,6 +34,43 @@ export default {
         OutlinedButton
     },
     setup(props) {
+        const store = useStore();
+        const router = useRouter();
+        const firstName = ref(null)
+        const lastName = ref(null)
+        const email = ref(null)
+        const password = ref(null)
+        const handleCreateUser = async (e) => {
+            try {
+                console.log({
+                    firstName,
+                    lastName,
+                    email,
+                    password
+                })
+                const reponse = await store.dispatch('createUser', {
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    email: email.value,
+                    password: password.value
+                })
+                console.log(store.state.user)
+                if (store.state.user !== null) {
+                    router.push('/products')
+                }
+                console.log(reponse)
+            } catch (e) {
+                console.log(e)
+                store.dispatch('handleErrorMessage', e.message)
+            }
+        }
+        return {
+            firstName,
+            lastName,
+            email,
+            password,
+            handleCreateUser
+        }
     }
 }
 </script>
@@ -53,9 +91,11 @@ export default {
     text-align: left;
     color: #FF4D00;
 }
+
 .form-container-sign-in {
     margin-top: 200px;
 }
+
 .form-inputs {
     display: flex;
     flex-direction: column;

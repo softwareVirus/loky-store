@@ -9,7 +9,7 @@
         h3 Email: 
         p.contact-user {{ contactItem.email }}
     h3 Content: 
-    p.contact-user(style="text-indent: 3em; margin: 0;") {{contactItem.content }}
+    p.contact-user(style="text-indent: 3em; margin: 0;") {{contactItem.message }}
 </template>
 <script>
 import IconButton from '../../icon-button.vue'

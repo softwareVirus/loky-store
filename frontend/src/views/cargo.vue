@@ -34,7 +34,7 @@
             .cargo-content 
 </template>
 <script>
-import Logo from '../components/logo.vue'
+import Logo from '../components/navbar-logo.vue'
 export default {
   name: 'Cargo',
   components: {
