@@ -1,27 +1,25 @@
 <template lang="pug">
-div(:class="(isOrder ? 'product-shopping-card' : 'product-card') + ' ' + (!product.inStock ? 'disabled-gray' : '')")
-  div(:class="isOrder ? 'product-header product-shopping-header' : 'product-header'")
-    .product-buttons-container(v-if="isOrder")
+div(:class="productCost == null ? 'product-shopping-card' : 'product-card'")
+  div(:class="productCost == null ? 'product-header product-shopping-header' : 'product-header'")
+    .product-buttons-container(v-if="productCost == null")
       .product-buttons 
-        IconButton(:isFilled="isFilled" @updateFavorite="handleFavoriteProduct" :useEmit="true")
-        IconButton(:isCloseButton="true" :handleClose="deleteValue")
-    img.product-image(src="@/assets/Untitled.png" v-if="!isOrder")
+        IconButton
+        IconButton(:isCloseButton="true")
+    img.product-image(src="@/assets/Untitled.png" v-if="productCost != null")
   .product-card-info
-    p.product-title {{product.name}}
-    p.product-cost(v-if="!isOrder") {{product.price}} USD
+    p.product-title {{productTitle}}
+    p.product-cost(v-if="productCost != null") {{productCost}}
     p.product-cost(v-else) {{productSize}}
-    TextButton(buttonContent="ADD TO CART" :direction="`/product/${product._id}`" v-if="!isOrder" :disabled="!product.inStock")
+    TextButton(buttonContent="ADD TO CART" direction="/products/:id" v-if="productCost != null")
     .quantity-buttons(v-else)
-      IconButtonNoPadding(:refValue="refValue" @updateRefValue="updateRefValue" :index="index")
-      p.product-cost {{ isOrder ? quantity : product.price + ' USD' }}
-      IconButtonNoPadding(:isPlusIcon="true" :refValue="refValue" @updateRefValue="updateRefValue" :index="index")
+      IconButtonNoPadding
+      p.product-cost {{ 2 }}
+      IconButtonNoPadding(:isPlusIcon="true")
 </template>
 <script>
 import TextButton from './text-button.vue'
 import IconButton from './icon-button.vue';
 import IconButtonNoPadding from './icon-button-no-padding.vue';
-import { ref, computed } from 'vue';
-import { useStore } from 'vuex';
 export default {
   name: 'ProductCard',
   components: {
@@ -30,60 +28,19 @@ export default {
     IconButtonNoPadding
   },
   props: {
-    product: {
-      type: Object,
-      required: true
+    productTitle: {
+      type: String,
+      required: true,
+    },
+    productCost: {
+      type: String,
+      default: null
     },
     productSize: {
       type: String,
       default: ""
-    },
-    isOrder: {
-      type: Boolean,
-      default: false
-    },
-    quantity: {
-      type: String,
-      required: false
-    },
-    refValue: {
-      type: Array,
-      default: []
-    },
-    updateList: {
-      type: Function,
-      default: () => { }
-    },
-    index: {
-      type: Number,
-      required: false
     }
   },
-  setup(props) {
-    const _id = ref(props.product._id)
-    const store = useStore()
-    const isFilled = ref(store.state.user !== null ? store.state.user.favoriteProducts.includes(_id.value) : false)
-    const updateRefValue = (newList) => {
-      console.log(newList)
-      props.updateList(newList)
-    }
-    const handleFavoriteProduct = () => {
-      store.dispatch('updateUserFavoriteProduct', props.product._id)
-      console.log('here update')
-      isFilled.value = !isFilled.value
-    }
-    const deleteValue = () => {
-      console.log(props.refValue.length === 1 ? [] : props.refValue.slice(0, props.index).concat(props.refValue.slice(props.index+1, props.refValue.length)))
-      props.updateList(props.refValue.length === 1 ? [] : props.refValue.slice(0, props.index).concat(props.refValue.slice(props.index+1, props.refValue.length)))
-    }
-    return {
-      _id,
-      updateRefValue,
-      deleteValue,
-      isFilled,
-      handleFavoriteProduct
-    }
-  }
 }
 </script>
 <style lang="css">
@@ -100,10 +57,6 @@ export default {
 .minimap .product-cost {
   line-height: 4.4px !important;
   font-size: 2.8px !important;
-}
-
-.disabled-gray {
-  filter: grayscale(1);
 }
 
 .minimap #product-info-container {

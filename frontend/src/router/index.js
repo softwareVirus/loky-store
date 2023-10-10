@@ -1,17 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/home.vue'
 
-import {store} from '../store/index'
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    redirect: to => {
-      // the function receives the target route as the argument
-      // we return a redirect path/location here.
-      return { path: '/products' }
-    }
   },
   {
     path: '/about',
@@ -45,55 +39,17 @@ const routes = [
   {
     path: '/user-basket',
     name: 'UserBasket',
-    component: () => import('../views/user-shopping-cart.vue')
+    component: () => import('../views/user-basket.vue')
   },
   {
     path: '/sign-in',
     name: 'SignIn',
-    beforeEnter: (to, from, next) => {
-      if(!store.state.user) 
-        return next()
-      next({})
-    },
     component: () => import('../views/sign-in.vue')
   },
   {
     path: '/sign-up',
     name: 'SignUp',
-    beforeEnter: (to, from, next) => {
-      if(!store.state.user) 
-        return next()
-      next({})
-    },
     component: () => import('../views/sign-up.vue')
-  },
-  {
-    path: '/admin',
-    name: 'Admin',
-    component: () => import('../views/admin.vue'),/*
-    beforeEnter: (to, from, next) => {/*
-      if(store.state.user?.isAdmin) 
-        return next()
-      next({})
-    },*/
-    children: [
-      {
-        path: 'contact-list',
-        component: () => import('../components/admin/contact-list.vue'),
-      },
-      {
-        path: 'product-management',
-        component: () => import('../components/admin/product-management.vue')
-      },
-      {
-        path: 'order-management',
-        component: () => import('../components/admin/order-management.vue')
-      },
-      {
-        path: 'user-management',
-        component: () => import('../components/admin/user-management.vue')
-      }
-    ]
   },
   {
     path: '/:pathMatch(.*)*',

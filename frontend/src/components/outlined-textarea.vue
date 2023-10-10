@@ -1,6 +1,6 @@
 <template lang="pug">
 .textarea-container 
-    textarea.outlined-textarea(:placeholder="placeholder" :style="style" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)")
+    textarea.outlined-textarea(:placeholder="placeholder" :style="style" :value="value")
     div
 </template>
 <script>
@@ -15,11 +15,10 @@ export default {
             type: String,
             default: ''
         },
-        modelValue: {
+        value: {
             type: String,
             default: ""
-        },
-        
+        }
     }
 }
 </script>

@@ -1,5 +1,5 @@
 <template lang="pug">
-button.primary-button(@click.prevent="handleClick") #[LeftArrow]{{ content  }}
+button.primary-button #[LeftArrow]{{ content  }}
 </template>
 <script>
 import LeftArrow from './left-button.vue'
@@ -9,10 +9,6 @@ export default {
         content: {
             type: String,
             required: true
-        },
-        handleClick: {
-            type: Function,
-            default: () => {}
         }
     },
     components: {

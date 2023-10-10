@@ -1,6 +1,6 @@
 <template lang="pug">
 div.input-container
-    input.input-text(:placeholder="placeholder" :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)")
+    input.input-text(:placeholder="placeholder" :type="type")
     div
 </template>
 <script>
@@ -15,12 +15,7 @@ export default {
             type: String,
             required: true
         },
-        modelValue: {
-            type: String,
-            default: ""
-        },
-    },
-    emits: ['update:modelValue']
+    }
 }
 </script>
 <style lang="css">

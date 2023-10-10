@@ -1,5 +1,4 @@
-const autopopulate = require('mongoose-autopopulate')
-const mongoose = require('mongoose');
+const { autopopulate } = require('mongoose-autopopulate')
 
 const contactFormSchema = new mongoose.Schema(
   {
@@ -24,5 +23,6 @@ const contactFormSchema = new mongoose.Schema(
 )
 
 contactFormSchema.plugin(autopopulate)
+const ContactForm = mongoose.model('ContactForm', contactFormSchema)
 
-module.exports = mongoose.model('ContactForm', contactFormSchema)
+module.exports = ContactForm

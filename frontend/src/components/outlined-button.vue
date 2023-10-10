@@ -1,6 +1,5 @@
 <template lang="pug">
-button.outlined-button(v-if="handleClick === null" :style="style") {{ content }}
-button.outlined-button(v-else :style="style" @click.prevent="handleClick") {{ content }} 
+button.outlined-button(:style="style") {{ content }} 
 </template>
 <script>
 import RightArrow from './right-arrow.vue';
@@ -21,10 +20,6 @@ export default {
         content: {
             type: String,
             required: true
-        },
-        handleClick: {
-            type: Function,
-            default: null
         }
     }
 }

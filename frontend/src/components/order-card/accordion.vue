@@ -4,7 +4,7 @@
         h4.accordion-title {{title}}
         button.order-card-button(@click.prevent="onClickAccordion") 
             template(v-if="isOpen")
-                MinusIcon(color="#2D2D2D")
+                MinusIcon
             template(v-else)
                 PlusIcon(color="#2D2D2D")
     div.panel(:class="{ 'open': isOpen }", ref="panel")
@@ -12,21 +12,18 @@
         .button-box(v-if="isButtonDisplay")
             DimensionButton(
                 v-for="(item,index) in buttons" 
-                :key="'14x'+item+index" 
+                :key="item" 
                 :content="item" 
                 :selectedClass="buttonIndex == index ? 'active' : ''"
                 :clickButton="handleSelect"
                 :index="index"
-                :disabled="!sortedButtonList.includes(item)"
-                @updateRefValue="updateRefValue"
-                :refValue="refValue"
             ) {{item}}
 </template>
 <script>
 import PlusIcon from './plus-icon.vue'
 import MinusIcon from './minus-icon.vue'
 import DimensionButton from './dimension-button.vue'
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 
 export default {
   name: 'Accordion',
@@ -43,32 +40,17 @@ export default {
       type: Boolean,
       default: false,
     },
-    buttonList: {
-      type: Array,
-      default: []
-    },
-    refValue: {
-      type: String,
-      default: null
-    },
-    updateSelectedDimension: {
-      type: Function,
-      default: () => {}
-    }
   },
   components: {
     PlusIcon,
     MinusIcon,
     DimensionButton,
   },
-  setup(props) {
+  setup() {
     const isOpen = ref(false)
     const panel = ref(null)
-    const buttons = ['S', '55', 'M', '58', 'L', '61', 'XL', '64', 'XXL', '67']
-    const sortedButtonList = computed(() => props.buttonList.sort(function(a,b) {
-      return buttons.indexOf(a) - buttons.indexOf(b)
-    }))
-    const buttonIndex = ref(props.refValue != null ? buttons.indexOf(props.refValue) : null)
+    const buttons = ref(['S', '55', 'M', '58', 'L', '61', 'XL', '64', 'XXL', '67'])
+    const buttonIndex = ref(null)
     const onClickAccordion = e => {
       isOpen.value = !isOpen.value
       if (isOpen.value) {
@@ -86,9 +68,6 @@ export default {
       }
     }
 
-    const updateRefValue = (newValue) => {
-      props.updateSelectedDimension(newValue)
-    }
     return {
       isOpen,
       onClickAccordion,
@@ -96,8 +75,6 @@ export default {
       buttons,
       buttonIndex,
       handleSelect,
-      sortedButtonList,
-      updateRefValue
     }
   },
 }

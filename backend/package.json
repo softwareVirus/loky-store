@@ -19,7 +19,6 @@
     ]
   },
   "dependencies": {
-    "@elastic/elasticsearch": "^8.9.0",
     "connect-mongo": "^4.6.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
@@ -35,7 +34,6 @@
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0",
     "passport-strategy": "1.x.x",
     "pug": "2.0.0-beta11",
     "socket.io": "^4.5.4"

@@ -1,11 +1,10 @@
 <template lang="pug">
-button(:class="'icon-button ' + (isCloseButton ? 'close-button' : 'favorite-button') + (className !== '' ? ' radius-button' : '')" @click.prevent="handleClick")
+button(:class="'icon-button ' + (isCloseButton ? 'close-button' : 'favorite-button') + (className !== '' ? ' radius-button' : '')" @click.native="buttonClickEvent" @click="handleClose")
     PlusIcon(v-if="isCloseButton" :className="'close-icon' + (className !== '' ? ' ' + className : '')" :color="className !== '' ? '#ff4d00' : 'white'")
-    FavoriteIcon(v-else :isFilled="isFilled")
+    FavoriteIcon(v-else)
 </template>
 <script>
 import PlusIcon from './order-card/plus-icon.vue';
-import { computed } from 'vue';
 import FavoriteIcon from './order-card/favorite-icon.vue';
 export default {
     name: "IconButton",
@@ -18,6 +17,11 @@ export default {
             type: Boolean,
             default: false
         },
+        buttonClickEvent: {
+            type: Function,
+            required: true,
+            default: () => {}
+        },
         className: {
             type: String,
             default: ""
@@ -25,37 +29,6 @@ export default {
         handleClose: {
             type: Function,
             default: () => {}
-        }, 
-        useEmit: {
-            type: Boolean,
-            default: false
-        },
-        updateValue: {
-            type: Function,
-            default: () => {}
-        },
-        isFilled: {
-            type: Boolean,
-            default: false
-        },
-        updateFavorite: {
-            type: Function,
-            default: () => {}
-        }
-    }, 
-    setup(props, {emit}) {
-        const isFavorite = computed(() => props.isFilled)
-        console.log(isFavorite.value, props.useEmit)
-        const handleClick = () => {
-            if(props.useEmit) {
-                emit('updateFavorite')
-                return;
-            }
-            props.handleClose()
-        }
-        return {
-            handleClick,
-            isFavorite
         }
     }
 }

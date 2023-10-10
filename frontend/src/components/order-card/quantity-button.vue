@@ -1,5 +1,5 @@
 <template lang="pug">
-button.quantity-button(@click="handleQuantity" :disabled="disabled")
+button.quantity-button(@click="handleQuantity")
     PlusIcon(v-if="isIncrease" color="#2D2D2D")
     MinusIcon(v-else color="#2D2D2D")
 </template>
@@ -21,10 +21,6 @@ export default {
       type: Function,
       required: true,
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
   },
 }
 </script>

@@ -1,7 +1,14 @@
 <template lang="pug">
 div.products-container#list(ref="dragWrapperCarosuel")
-  template(v-for="product in products" :key="'list'+product[0]._id")
-    ProductQuarter(:products="product")
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+
 </template>
 <script>
 import ProductQuarter from './product-quarter.vue'
@@ -16,14 +23,9 @@ export default {
       type: Function,
       default: () => {},
     },
-    products: {
-      type: Array,
-      default: []
-    }
   },
   setup(props) {
     const dragWrapperCarosuel = ref(null)
-    console.log(props.products,'let')
     onMounted(() => {
       props.getRef(dragWrapperCarosuel.value)
     })

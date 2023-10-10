@@ -1,6 +1,5 @@
 <template lang="pug">
-button.filled-button(v-if="handleOpen !== null" :style="style" @click.prevent="handleOpen" :type="type" :disabled="disabled") {{ content }} #[RightArrow(v-if="isRightArrow")] 
-button.filled-button(v-else :style="style" :type="type" :disabled="disabled") {{ content }} #[RightArrow(v-if="isRightArrow")] 
+button.filled-button(:style="style" @click="handleOpen" :type="type") {{ content }} #[RightArrow(v-if="isRightArrow")] 
 </template>
 <script>
 import RightArrow from './right-arrow.vue';
@@ -24,15 +23,11 @@ export default {
         },
         handleOpen: {
             type: Function,
-            default: null
+            default: () => {}
         },
         type: {
             type: String,
             default: ""
-        },
-        disabled: {
-            type: Boolean,
-            default: false
         }
     }
 }
@@ -60,11 +55,5 @@ export default {
 .filled-button:disabled {
     opacity: 0.5;
     user-select: none;
-    cursor: default;
-}
-
-.filled-button:disabled:hover {
-    background-color: var(--bg-color-primary);
-    border-color: var(--bg-color-primary);
 }
 </style>

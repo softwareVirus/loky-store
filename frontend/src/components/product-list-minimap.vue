@@ -6,8 +6,14 @@ div#minimap-container
         @click="clickMinimap"
         @wheel="handleWheel"
       )
-      template(v-for="product in products" :key="'list'+product[0]._id")
-        ProductQuarter(:products="product")
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
+        ProductQuarter
     #custom-rectangle-scrollbar(
         @mousedown="startDrag"
         @mousemove="handleDrag"
@@ -51,10 +57,6 @@ export default {
       type: Function,
       default: () => {},
     },
-    products: {
-      type: Array,
-      default: []
-    }
   },
   setup(props) {
     const dragWrapper = ref(null)

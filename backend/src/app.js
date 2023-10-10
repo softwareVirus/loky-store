@@ -6,48 +6,33 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const cors = require('cors')
 const session = require('express-session')
-const MongoStore = require('connect-mongo');
+const MongoStore = require('connect-mongo')
 const passport = require('passport')
+const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const authRouter = require('./routes/auth')
-const productRouter = require('./routes/product')
-const contactRouter = require('./routes/contact')
-const orderRouter = require('./routes/order')
 const { sanitize } = require('express-mongo-sanitize')
-const helmet = require('helmet')
 require('./database-connection')
-
 const app = express()
-app.use(helmet())
 app.use(
   cors({
     origin: true,
     credentials: true,
   })
 )
-app.get('/',(req,res) => {
-  res.send('HEEELLLO')
-})
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
+
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
+console.log(process.env.MONGODB_CONNECTION_STRING)
 app.use(express.static(path.join(__dirname, 'public')))
-
-app.all('*', (req, res, next) => {
-  req.body = sanitize(req.body)
-  req.headers = sanitize(req.headers)
-  req.params = sanitize(req.params)
-
-  next()
-})
-
 app.use(
   session({
-    secret: 'tombala session secret',
+    secret: 'loky store session secret',
     store: new MongoStore({
       mongoUrl: process.env.MONGODB_CONNECTION_STRING,
       stringify: false,
@@ -56,13 +41,18 @@ app.use(
     saveUninitialized: false,
   })
 )
+app.all('*', (req, res, next) => {
+  req.body = sanitize(req.body)
+  req.headers = sanitize(req.headers)
+  req.params = sanitize(req.params)
 
-app.use(passport.session());
+  next()
+})
+
+app.use(passport.authenticate('session'));
+app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)
-app.use('/order', orderRouter)
-app.use('/contact', contactRouter)
-app.use('/product', productRouter)
 //app.get('/login', (req,res) => console.log('here'))
 
 // catch 404 and forward to error handler
@@ -87,5 +77,4 @@ app.use((err, req, res, next) => {
   res.send(error)
 })
 
-app.listen(3000, () => console.log('login')) 
 module.exports = app

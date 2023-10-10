@@ -2,16 +2,17 @@
 .contact-container
     .form-container 
         h2#form-title Fill out the form and we will#[br]be in touch.
-        form(@submit.prevent="handleSubmit")
+        form
             .form-inputs
-                OutlinedInput(placeholder="NAME(required)" type="text" :modelValue="name" name="name" @update:modelValue="newValue => name = newValue")
-                OutlinedInput(placeholder="EMAİL(required)" type="email" :modelValue="email" name="email" @update:modelValue="newValue => email = newValue")
-                OutlinedTextarea(placeholder="MESSAGE(required)" :modelValue="detail" name="detail" @update:modelValue="newValue => detail = newValue")
-                FilledButton(content="Contact us " type="submit")
+                OutlinedInput(placeholder="NAME(required)" type="text")
+                OutlinedInput(placeholder="EMAİL(required)" type="email")
+                OutlinedTextarea(placeholder="MESSAGE(required)")
+                div
+                    FilledButton(content="Contact us ")
 
 </template>
 <script>
-import { ref, onUnmounted } from 'vue'
+import { ref,onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import OutlinedInput from '../components/outlined-input.vue';
 import OutlinedTextarea from '../components/outlined-textarea.vue';
@@ -29,25 +30,6 @@ export default {
         OutlinedTextarea,
         FilledButton
     },
-    setup(props) {
-        const store = useStore();
-        const name = ref('');
-        const email = ref('');
-        const detail = ref('');
-        const handleSubmit = () => {
-            store.dispatch('createContact', {
-                name: name.value,
-                email: email.value,
-                message: detail.value
-            })
-        }
-        return {
-            name,
-            email,
-            detail,
-            handleSubmit
-        }
-    }
 }
 </script>
 <style lang="css">
@@ -67,13 +49,11 @@ export default {
     text-align: left;
     color: #FF4D00;
 }
-
 .form-container {
     position: relative;
     right: 204px;
     top: 130px
 }
-
 .form-inputs {
     display: flex;
     flex-direction: column;

@@ -1,6 +1,5 @@
-
 <template lang="pug">
-button(:class="selectedClass.concat(' dimension-button' + (isSizesButton ? ' size-button' : ''))" @click="() => handleClickEvent(index)" :disabled="disabled") {{content}}
+button(:class="selectedClass.concat(' dimension-button' + (isSizesButton ? ' size-button' : ''))" @click="() => clickButton(index)") {{content}}
 </template>
 <script>
 export default {
@@ -26,28 +25,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    },
-    refValue: {
-      type: String,
-      default: null
-    },
-    updateRefValue: {
-      type: Function,
-      default: () => { }
-    }
   },
-  setup(props, { emit }) {
-    const handleClickEvent = (index) => {
-      emit('updateRefValue', props.refValue === props.content ? null : props.content)
-      props.clickButton(index)
-    }
-    return {
-      handleClickEvent
-    }
-  }
 }
 </script>
 <style lang="css">
@@ -78,10 +56,5 @@ export default {
   height: 36px !important;
   width: 36px !important;
   border-width: 1px !important;
-}
-
-.dimension-button:disabled {
-  opacity: 0.5;
-  cursor: default;
 }
 </style>

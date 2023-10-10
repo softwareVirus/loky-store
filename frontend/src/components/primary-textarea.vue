@@ -1,5 +1,6 @@
 <template lang="pug">
-textarea.primary-textarea(:placeholder="placeholder" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)")
+textarea.primary-textarea(v-if="min === undefined" :placeholder="placeholder" :value="value")
+textarea.primary-textarea(v-else :min="min" :max="max" :placeholder="placeholder" :type="type" :value="value")
 </template>
 <script>
 export default {
@@ -9,12 +10,24 @@ export default {
             type: String,
             required: true
         },
-        modelValue: {
+        type: {
+            type: String,
+            required: true
+        },
+        value: {
             type: String,
             default: ""
         },
-    },
-    emits: ['update:modelValue']
+        min: {
+            type: Number,
+            required: false,
+            default: undefined
+        },
+        max: {
+            type: Number,
+            required: false
+        }
+    }
 }
 </script>
 <style lang="css">

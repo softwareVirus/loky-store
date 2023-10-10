@@ -3,11 +3,10 @@
     .empty-basket-box 
         EmptyBasketIcon
         h2.empty-basket-title Your cart is empty 
-        p.empty-basket-content You can examine our carefully prepared #[<br>] products on the products page!
-        PrimaryButton(content="Back to shop" :handleClick="handleClick")
-</template> 
+        p.empty-basket-content You can examine our carefully prepared#[<br>]products on the products page!
+        PrimaryButton(content="Back to shop")
+</template>
 <script>
-import { useRouter } from 'vue-router';
 import EmptyBasketIcon from './empty-basket-icon.vue';
 import PrimaryButton from './primary-button.vue';
 export default {
@@ -15,15 +14,6 @@ export default {
     components: {
         EmptyBasketIcon,
         PrimaryButton
-    },
-    setup() {
-        const router = useRouter()
-        const handleClick = () => {
-            router.push('/')
-        }
-        return {
-            handleClick
-        }
     }
 }
 </script>

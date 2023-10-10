@@ -1,5 +1,5 @@
 <template lang="pug">
-router-link#text-button(:to="direction" :class="disabled ? 'disabled' : ''") {{buttonContent}}
+router-link#text-button(:to="direction") {{buttonContent}}
 </template>
 <script>
 export default {
@@ -13,10 +13,6 @@ export default {
       type: String,
       required: true,
     },
-    disabled: {
-      type: Boolean,
-      default: false
-    }
   },
 }
 </script>
@@ -30,9 +26,5 @@ export default {
   line-height: 22px;
   font-size: 14px;
   text-decoration: none;
-}
-.disabled {
-  pointer-events: none;
-  cursor: default;
 }
 </style>
