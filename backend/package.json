@@ -1,58 +1,56 @@
 {
-  "name": "backend",
+  "name": "todos-express-starter",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "start": "node ./bin/www",
-    "lint": "pretty-quick -w . && eslint . --fix",
-    "lint-staged": "lint-staged",
-    "test": "jest --testEnvironment=node --verbose --forceExit --watchAll --maxWorkers=1",
-    "test-coverage": " jest --collect-coverage --testEnvironment=node --forceExit --maxWorkers=1"
+  "description": "Starter todo app using Express, Passport, and SQLite for sign in.",
+  "keywords": [
+    "example",
+    "express",
+    "passport",
+    "sqlite"
+  ],
+  "author": {
+    "name": "Jared Hanson",
+    "email": "jaredhanson@gmail.com",
+    "url": "https://www.jaredhanson.me/"
   },
-  "lint-staged": {
-    "*.js": [
-      "pretty-quick --staged",
-      "eslint --fix"
-    ],
-    "*.{json|css|md}": [
-      "pretty-quick --staged"
-    ]
+  "homepage": "https://github.com/passport/todos-express-starter",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/passport/todos-express-starter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/passport/todos-express-starter/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/jaredhanson"
+  },
+  "license": "Unlicense",
+  "scripts": {
+    "start": "node ./bin/www"
   },
   "dependencies": {
-    "connect-mongo": "^4.6.0",
+    "body-parser": "^1.20.2",
+    "connect-mongo": "^5.0.0",
+    "connect-sqlite3": "^0.9.13",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",
+    "dotenv": "^8.6.0",
+    "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "express-mongo-sanitize": "^2.2.0",
     "express-session": "^1.17.3",
-    "helmet": "^6.0.1",
     "http-errors": "~1.6.3",
-    "mongodb": "^4.13.0",
-    "mongoose": "^6.8.2",
-    "mongoose-autopopulate": "^0.12.2",
+    "mkdirp": "^1.0.4",
+    "mongoose": "^7.5.2",
+    "mongoose-autopopulate": "^1.0.1",
     "morgan": "~1.9.1",
+    "nodemon": "^3.0.1",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "passport-strategy": "1.x.x",
-    "pug": "2.0.0-beta11",
-    "socket.io": "^4.5.4"
-  },
-  "devDependencies": {
-    "chai": "1.x.x",
-    "chai-passport-strategy": "0.1.x",
-    "eslint": "^7.8.1",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.6",
-    "eslint-plugin-react-hooks": "^4.1.0",
-    "jest": "^26.4.2",
-    "lint-staged": "^10.3.0",
-    "mocha": "1.x.x",
-    "prettier": "^2.1.1",
-    "pretty-quick": "^3.0.0",
-    "supertest": "^4.0.2"
+    "passport-local-mongoose": "^8.0.0",
+    "pluralize": "^8.0.0",
+    "sqlite3": "^5.0.2"
   }
 }

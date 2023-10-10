@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const autopopulate = require('mongoose-autopopulate')
-
+const passportLocalMongoose = require('passport-local-mongoose');
 const UserSchema = new mongoose.Schema(
     {
       firstName: {
@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
         required: true,
         unique: true,
       },
-      password: {
+      hashed_password: {
         type: String,
         required: true,
       },
@@ -24,30 +24,20 @@ const UserSchema = new mongoose.Schema(
         type: String,
         required: true
       },
-      orderItems: [
-        {
-          orderCard: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'OrderCard',
-          },
-          quantity: {
-            type: Number,
-            required: true
-          },
-          orderDate: {
-            type: Date,
-            default: Date.now,
-          },
-        },
-      ],
       isAdmin: {
         type: Boolean,
         default: false
-      }
+      },
+      favoriteProducts: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'OrderCard',
+        },
+      ],
     },
     { timestamps: true } // This option adds created_at and updated_at fields
   )
 
 UserSchema.plugin(autopopulate)
-
+UserSchema.plugin(passportLocalMongoose);
 module.exports = mongoose.model('User', UserSchema)
