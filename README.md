@@ -27,7 +27,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  ![alt logo](https://user-images.githubusercontent.com/63147096/273959056-e93b85d9-f722-493d-8c8c-c91083167622.png)
+  <img src="https://user-images.githubusercontent.com/63147096/273959056-e93b85d9-f722-493d-8c8c-c91083167622.png" alt="logo">
   <h3 align="center">Loky Store</h3>
 
   <p align="center">
