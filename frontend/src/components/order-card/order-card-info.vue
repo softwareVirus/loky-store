@@ -5,19 +5,22 @@ div(:class="isSizes ? 'order-card-info' : 'order-card-info quantity-info'")
         template(v-if="isSizes")
             DimensionButton(
                 v-for="(item,index) in buttons" 
-                :key="item" 
+                :key="'15x'+item+index" 
                 :content="item" 
                 :selectedClass="buttonIndex == index ? 'active' : ''"
                 :clickButton="handleSelect"
                 :isSizesButton="true"
                 :index="index"
+                :disabled="!sortedButtonList.includes(item)"
+                @updateRefValue="updateRefValue"
+                :refValue="refValue"
             ) {{item}}
         template(v-else)
-            h5#quantity 2
+            h5#quantity {{ quantity }}
 </template>
 <script>
 import DimensionButton from './dimension-button.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 export default {
   name: 'OrderCardInfo',
   components: {
@@ -28,10 +31,29 @@ export default {
       type: Boolean,
       default: true,
     },
+    buttonList: {
+      type: Array,
+      default: []
+    },
+    quantity: {
+      type: Number,
+      default: 0
+    },
+    refValue: {
+      type: String,
+      default: null
+    },
+    updateSelectedSize: {
+      type: Function,
+      default: () => {}
+    }
   },
   setup(props) {
-    const buttons = ref(['S', 'M', 'L', 'XL', 'XXL'])
-    const buttonIndex = ref(null)
+    const buttons = ['S', 'M', 'L', 'XL', 'XXL']
+    const sortedButtonList = computed(() => props.buttonList.sort(function(a,b) {
+      return buttons.indexOf(a) - buttons.indexOf(b)
+    }))
+    const buttonIndex = ref(props.refValue != null ? buttons.indexOf(props.refValue) : null)
     const handleSelect = index => {
       if (buttonIndex.value === index) {
         buttonIndex.value = null
@@ -39,10 +61,15 @@ export default {
         buttonIndex.value = index
       }
     }
+    const updateRefValue = (newValue) => {
+      props.updateSelectedSize(newValue)
+    }
     return {
       buttonIndex,
-      buttons,
+      sortedButtonList,
       handleSelect,
+      buttons,
+      updateRefValue
     }
   },
 }

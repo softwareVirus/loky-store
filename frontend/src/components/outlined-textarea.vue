@@ -1,6 +1,6 @@
 <template lang="pug">
 .textarea-container 
-    textarea.outlined-textarea(:placeholder="placeholder" :style="style" :value="value")
+    textarea.outlined-textarea(:placeholder="placeholder" :style="style" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)")
     div
 </template>
 <script>
@@ -15,10 +15,11 @@ export default {
             type: String,
             default: ''
         },
-        value: {
+        modelValue: {
             type: String,
             default: ""
-        }
+        },
+
     }
 }
 </script>
@@ -38,11 +39,11 @@ export default {
 
 .outlined-textarea::placeholder {
     font-size: 21px;
-    color:#F5D5C6;
+    color: #F5D5C6;
     line-height: 28.8px;
 }
 
-.outlined-textarea + div {
+.outlined-textarea+div {
     content: "";
     width: 0;
     display: block;
@@ -52,10 +53,28 @@ export default {
     position: relative;
     top: -7px;
 }
+
 .outlined-textarea:focus {
     outline: none;
 }
-.outlined-textarea:focus + div {
+
+.outlined-textarea:focus+div {
     width: 443px;
+}
+
+@media (max-width: 600px) {
+    .outlined-textarea {
+        width: 100%;
+    }
+
+    .outlined-textarea::placeholder {
+        font-size: 1.25rem;
+        color: #F5D5C6;
+        line-height: 1.25rem;
+    }
+
+    .outlined-textarea:focus+div {
+        width: 100%;
+    }
 }
 </style>

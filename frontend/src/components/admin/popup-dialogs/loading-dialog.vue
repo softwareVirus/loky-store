@@ -1,55 +1,45 @@
 <template lang="pug">
-.contact-container
+.loading-container(:style="style")
     .close-button-box
         IconButton(:isCloseButton="true" className="no-bgcolor" :handleClose="handleClose")
-    .contact-info-box
-        h3 Name: 
-        p.contact-user {{ contactItem.name }}
-    .contact-info-box        
-        h3 Email: 
-        p.contact-user {{ contactItem.email }}
-    h3 Content: 
-    p.contact-user(style="text-indent: 3em; margin: 0;") {{contactItem.message }}
+    .loading-info-box
+        Loading
 </template>
 <script>
 import IconButton from '../../icon-button.vue'
-
+import Loading from '../../loading.vue';
 export default {
-    name: "ContactDialog",
+    name: "LoadingDialog",
     props: {
-        contactItem: {
+        loadingItem: {
             type: Object,
             required: true
         },
         handleClose: {
             type: Function,
             required: true
+        },
+        style: {
+            type: CSSStyleDeclaration,
+            required: false
         }
     },
     components: {
-        IconButton
+        IconButton,
+        Loading
     },
 }
 </script>
 <style lang="css">
-    
-.contact-user {
-    overflow-wrap: break-word;
-    tab-size: 2;
-}
-
-.contact-info-box>h3,
-.contact-info-box>p {
-    margin: 0;
-}
-
-.contact-info-box {
+.loading-info-box {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
+    height: 90%;
 }
 
-.contact-container {
+.loading-container {
     background-color: white;
     border-radius: 0.5rem;
     max-width: 30vw;
@@ -59,14 +49,13 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-height: 8rem;
 }
 
-.contact-container>h3 {
-    margin: 0;
-}
 
 .close-button-box {
     display: flex;
     justify-content: flex-end;
+    width: 100%;
 }
 </style>

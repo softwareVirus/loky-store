@@ -1,6 +1,6 @@
 <template lang="pug">
-input.primary-input(v-if="min === undefined" :name="name" :placeholder="placeholder" :type="type" :value="value")
-input.primary-input(v-else :min="min" :max="max" :name="name" :placeholder="placeholder" :type="type" :value="value")
+input.primary-input(v-if="min === undefined" :style="style" :name="name" :placeholder="placeholder" :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" autocomplete="off")
+input.primary-input(v-else :min="min" :max="max" :name="name" :style="style" :placeholder="placeholder" :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" autocomplete="off")
 </template>
 <script>
 export default {
@@ -14,7 +14,7 @@ export default {
             type: String,
             required: true
         },
-        value: {
+        modelValue: {
             type: String,
             default: ""
         },
@@ -31,7 +31,12 @@ export default {
             type: String,
             required: true
         },
+        style: {
+            type: String,
+            default: ""
+        }
     },
+    emits: ['update:modelValue'] 
 }
 </script>
 <style lang="css">

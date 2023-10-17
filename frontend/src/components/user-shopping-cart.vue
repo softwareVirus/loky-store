@@ -46,9 +46,14 @@ export default {
 </script>
 <style lang="css">
 .shopping-cart-header {
-    display: flex;
+    display: none;
     padding: 0 32px;
     margin-top: 30px;
+}
+@media (max-width: 600px) {
+    .shopping-cart-header {
+        display: none;
+    }
 }
 
 .shopping-cart-title {

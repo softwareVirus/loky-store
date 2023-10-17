@@ -11,7 +11,6 @@ const mongoose = require("mongoose");
 const MongoStore = require("connect-mongo");
 const cors = require("cors");
 const bodyParser = require('body-parser')
-console.log(process.env.MONGODB_CONNECTION_STRING)
 const connectionString =
   process.env.MONGODB_CONNECTION_STRING || "mongodb://localhost";
 
@@ -24,7 +23,6 @@ mongoose
   })
   .then(() => console.log("Database connection established."))
   .catch((e) => console.log(e,'dsadsadsa'));
-  console.log(process.env.MONGODB_CONNECTION_STRING)
 
 const usersRouter = require("./routes/users");
 const authRouter = require("./routes/auth");
@@ -63,7 +61,6 @@ app.use(
     }),
   })
 );
-console.log(process.env.MONGODB_CONNECTION_STRING)
 app.use(passport.session())
 app.use('/users', usersRouter)
 app.use('/auth', authRouter)

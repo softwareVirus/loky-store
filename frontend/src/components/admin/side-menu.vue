@@ -36,7 +36,6 @@ export default {
     border-color: var(--bg-color-primary);
     padding: 1rem;
     box-sizing: border-box;
-    position: fixed;
 }
 
 .side-menu-logo {

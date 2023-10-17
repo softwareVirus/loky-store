@@ -23,19 +23,32 @@
 </template>
 <script>
 export default {
-    name: 'Logo',
-    props: {
-        width: {
-            type: Number,
-            default: 135
-        },
-        height: {
-            type: Number,
-            default: 108
-        }
+  name: 'Logo',
+  props: {
+    width: {
+      type: Number,
+      default: 135
+    },
+    height: {
+      type: Number,
+      default: 108
     }
+  }
 }
 </script>
-<style lang="">
-    
+<style lang="css">
+@media (max-width: 1350px) {
+  .logo {
+    max-width: 320px;
+    max-height: 256px;
+  }
+}
+
+@media (max-width: 1020px) {
+  .logo {
+    max-width: 45px;
+    max-height: 36px;
+  }
+}
+
 </style>

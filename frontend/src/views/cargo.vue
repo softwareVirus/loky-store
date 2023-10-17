@@ -34,7 +34,7 @@
             .cargo-content 
 </template>
 <script>
-import Logo from '../components/logo.vue'
+import Logo from '../components/navbar-logo.vue'
 export default {
   name: 'Cargo',
   components: {
@@ -97,13 +97,19 @@ export default {
   display: none;
 }
 .cargo-title {
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 28.8px;
 }
 
 .cargo-content,
 .cargo-content > a {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: inherit;
+}
+
+@media (max-width: 600px) {
+  .cargo-container {
+    width: 90%;
+  }
 }
 </style>

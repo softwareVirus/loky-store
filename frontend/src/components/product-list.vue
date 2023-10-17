@@ -1,14 +1,7 @@
 <template lang="pug">
 div.products-container#list(ref="dragWrapperCarosuel")
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-        ProductQuarter
-
+  template(v-for="product in products" :key="'list'+product[0]._id")
+    ProductQuarter(:products="product")
 </template>
 <script>
 import ProductQuarter from './product-quarter.vue'
@@ -21,11 +14,16 @@ export default {
   props: {
     getRef: {
       type: Function,
-      default: () => {},
+      default: () => { },
     },
+    products: {
+      type: Array,
+      default: []
+    }
   },
   setup(props) {
     const dragWrapperCarosuel = ref(null)
+    console.log(props.products, 'let')
     onMounted(() => {
       props.getRef(dragWrapperCarosuel.value)
     })
@@ -51,8 +49,25 @@ export default {
   top: 37px;
   width: calc(100% - 32px);
   overflow-y: scroll;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+@media (max-width: 1020px) {
+  .products-container {
+    flex-direction: column;
+    margin-bottom: 6rem !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-container {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    width: calc(100% - 48px) !important;
+  }
 }
 
 .products-container::-webkit-scrollbar {

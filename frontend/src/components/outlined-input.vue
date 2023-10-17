@@ -1,6 +1,6 @@
 <template lang="pug">
 div.input-container
-    input.input-text(:placeholder="placeholder" :type="type")
+    input.input-text(:placeholder="placeholder" :type="type" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)")
     div
 </template>
 <script>
@@ -15,7 +15,12 @@ export default {
             type: String,
             required: true
         },
-    }
+        modelValue: {
+            type: String,
+            default: ""
+        },
+    },
+    emits: ['update:modelValue']
 }
 </script>
 <style lang="css">
@@ -33,11 +38,11 @@ export default {
 
 .input-text::placeholder {
     font-size: 21px;
-    color:#F5D5C6;
+    color: #F5D5C6;
     line-height: 28.8px;
 }
 
-.input-text + div {
+.input-text+div {
     content: "";
     width: 0;
     display: block;
@@ -47,10 +52,26 @@ export default {
     position: relative;
     top: -3px;
 }
+
 .input-text:focus {
     outline: none;
 }
-.input-text:focus + div {
+
+.input-text:focus+div {
     width: 443px;
 }
-</style>
+
+@media (max-width: 600px) {
+    .input-text::placeholder {
+        font-size: 1.25rem;
+        line-height: 1.25rem;
+    }
+
+    .input-text {
+        width: 100%;
+    }
+
+    .input-text:focus+div {
+        width: 100%;
+    }
+}</style>

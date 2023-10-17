@@ -6,39 +6,36 @@
         .product-form-input-v2
             label.cost-label Release Month: 
             select.month-selection(v-model="releaseMonth")
-                option(v-for="item in months" :key="uniqueID()" :value="item") {{ item }}
-            p {{ releaseMonth }}
+                option(v-for="item in months" :key="item" :value="item") {{ item }}
         .product-form-input-v2
             label.cost-label Release Year:
-            PrimaryInput(placeholder="1970" name="releaseYear" type="number"  min="1900" max="2099" step="1" :value="releaseYear")
+            PrimaryInput(placeholder="1970" name="releaseYear" type="number"  :min="1900" :max="2099" :step="1" :modelValue="releaseYear" @update:modelValue="newValue => releaseYear = newValue")
         .product-form-input-v2
             label.cost-label Price: 
-            PrimaryInput(placeholder="25" type="number" :value="price" name="price")
+            PrimaryInput(placeholder="25" type="number" :modelValue="price" name="price" @update:modelValue="newValue => price = newValue")
         .product-form-input-container
             .product-form-input-box
                 h4.title Dimensions:
                 .product-form-input
-                    .product-form-input-item(v-for="(item,index) in dimensions" :key="uniqueID()")
+                    .product-form-input-item(v-for="(item,index) in dimensions" :key="'x'+index+item")
                         label(:for="'dimension'+item+index") {{ item }}
-                        input(type="checkbox" :name="'dimension'+item+index" :checked="selectedDimensions.includes(item)")
-
+                        input(type="checkbox" :name="'dimension'+item+index" :value="item" v-model="selectedDimensions")
             .product-form-input-box
                 h4.title Sizes:
                 .product-form-input
-                    .product-form-input-item(v-for="(item,index) in sizes" :key="uniqueID()")
+                    .product-form-input-item(v-for="(item,index) in sizes" :key="'y'+index+item")
                         label(:for="'size'+item+index") {{ item }}
-                        input(type="checkbox" :name="'size'+item+index" :checked="selectedSizes.includes(item)")
+                        input(type="checkbox" :name="'size'+item+index" :value="item" v-model="selectedSizes")
             .product-form-input-box
                 h4.title Stock Situation:
                 .product-form-input
-                    .product-form-input-item(v-for="(item, index) in stock" :key="uniqueID()")
-                        label(:for="'stock'+item") {{ item }}
-                        input(type="checkbox" v-model="selectedStockSituation" :checked="selectedStockSituation == item" :name="'stock'+item" @change="() => handleStockSituation(item)")
+                    .product-form-input-item(v-for="(item, index) in stock" :key="index+item")
+                        label(:for="'stock'+item") {{ item ? 'Yes' : 'No' }}
+                        input(type="radio" v-model="selectedStockSituation" :name="'stock'+item" :value="item")
         .product-form-input-box
             h4.title Detail:
-            PrimaryTextarea(style="margin-top: 1rem" :value="productItem.detail")
-        div.submit-input
-            FilledButton(content="Submit" :isRightArrow="false" type="submit" :handleOpen="() => {}")
+            PrimaryTextarea(style="margin-top: 1rem" :modelValue="detail" placeholder="Detail..." @update:modelValue="newValue => detail = newValue")
+        FilledButton(content="Submit" :isRightArrow="false" type="submit")
         
 </template>
 <script>
@@ -48,7 +45,7 @@ import PrimaryInput from '../../primary-input.vue'
 import OutlinedInput from '../../outlined-textarea.vue'
 import FilledButton from '../../filled-button.vue'
 import { ref } from 'vue'
-import { uniqueID } from '@/utils/utils'
+import { useStore } from 'vuex'
 
 export default {
     name: "ContactDialog",
@@ -60,6 +57,10 @@ export default {
         handleClose: {
             type: Function,
             required: true
+        },
+        isCreatingProduct: {
+            type: Boolean,
+            default: false
         }
     },
     components: {
@@ -70,36 +71,85 @@ export default {
         FilledButton
     },
     setup(props) {
+        const store = useStore()
         const productItem = props.productItem
         const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        const dimensions = ref(['S', '55', 'M', '58', 'L', '61', 'XL', '64', 'XXL', '67']);
-        const selectedDimensions = ref(productItem.dimensions)
-        const selectedSizes = ref(productItem.size)
-        const sizes = ref(['S', 'M', 'L', 'XL', 'XXL'])
-        const stock = ref([true, false])
-        const releaseYear = ref(productItem.releaseYear.toString())
-        const releaseMonth = ref(productItem.releaseMonth.toString())
-        const price = ref(productItem.price.toString())
-        const selectedStockSituation = ref(productItem.inStock)
+        const dimensions = ['S', '55', 'M', '58', 'L', '61', 'XL', '64', 'XXL', '67'];
+        const sizes = ['S', 'M', 'L', 'XL', 'XXL'];
+        const stock = [true, false];
+
+        const selectedDimensions = ref(productItem.dimensions);
+        const selectedSizes = ref(productItem.sizes);
+        const releaseYear = ref(productItem.releaseYear.toString());
+        const releaseMonth = ref(productItem.releaseMonth.toString());
+        const price = ref(productItem.price.toString());
+        const selectedStockSituation = ref(productItem.inStock);
+        const detail = ref(productItem.detail);
 
         const handleFileUpload = (e) => console.log(e);
+
         const handleStockSituation = (event) => {
             console.log(event.target.checked)
             selectedStockSituation.value = event
         }
 
-        const handleSubmit = (e) => {
-            console.log(e, releaseMonth.value, releaseYear.value, e.target.releaseYear.value)
-            sizes.value.forEach((item, index) => {
-                console.log(e.target['size' + item + index].checked)
-            })
+        const handleSubmit = async (e) => {
+            if (props.isCreatingProduct) {
+                const createdProduct = await store.dispatch('createProduct', {
+                    name: 'Hello World',
+                    dimensions: selectedDimensions.value,
+                    sizes: selectedSizes.value,
+                    releaseYear: releaseYear.value,
+                    releaseMonth: releaseMonth.value,
+                    price: price.value,
+                    inStock: selectedStockSituation.value,
+                    detail: detail.value,
+                    imageSrc: [
+                        {
+                            image: require('@/assets/Untitled.png'),
+                            alt: 'Image 1',
+                        },
+                        {
+                            image: require('@/assets/Untitled.png'),
+                            alt: 'Image 1',
+                        },
+                    ],
+                })
+                if (createdProduct === true)
+                    props.handleClose()
+            } else {
+                const updatedProduct = await store.dispatch('updateProduct', {
+                    _id: productItem._id,
+                    name: 'Hello World',
+                    dimensions: selectedDimensions.value,
+                    imageSrc: [
+                        {
+                            image: require('@/assets/Untitled.png'),
+                            alt: 'Image 1',
+                        },
+                        {
+                            image: require('@/assets/Untitled.png'),
+                            alt: 'Image 1',
+                        },
+                    ],
+                    sizes: selectedSizes.value,
+                    releaseYear: releaseYear.value,
+                    releaseMonth: releaseMonth.value,
+                    price: price.value,
+                    inStock: selectedStockSituation.value,
+                    detail: detail.value,
+                    
+                })
+                if (updatedProduct === true)
+                    props.handleClose()
+            }
+
         }
         return {
             handleFileUpload,
             dimensions,
             sizes,
             selectedDimensions,
-            uniqueID,
             handleStockSituation,
             selectedStockSituation,
             selectedSizes,
@@ -108,6 +158,7 @@ export default {
             releaseYear,
             releaseMonth,
             price,
+            detail,
             stock
         }
     }
@@ -206,5 +257,33 @@ input[type="checkbox"]::before {
 
 input[type="checkbox"]:checked::before {
     transform: scale(1);
+}
+
+input[type='radio']:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: #d1d3d1;
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
+}
+
+input[type='radio']:checked:after {
+    width: 15px;
+    height: 15px;
+    border-radius: 15px;
+    top: -2px;
+    left: -1px;
+    position: relative;
+    background-color: var(--bg-color-primary);
+    content: '';
+    display: inline-block;
+    visibility: visible;
+    border: 2px solid white;
 }
 </style>
