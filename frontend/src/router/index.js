@@ -1,25 +1,15 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/home.vue'
 
 import {store} from '../store/index'
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
     redirect: to => {
       // the function receives the target route as the argument
       // we return a redirect path/location here.
       return { path: '/products' }
     }
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/about.vue'),
   },
   {
     path: '/cargo',
